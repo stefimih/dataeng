@@ -1,0 +1,10 @@
+{
+	"name": "synapse-sql-ep",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/18f556c9-76e9-42eb-a891-e8752bc4c120/resourceGroups/DataEng/providers/Microsoft.Synapse/workspaces/nycpayrollsynapse",
+		"groupId": "sql",
+		"fqdns": [
+			"nycpayrollsynapse.sql.azuresynapse.net"
+		]
+	}
+}

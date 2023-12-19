@@ -1,0 +1,125 @@
+{
+	"name": "load_blob_to_synapse",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AgencyMaster_csv",
+						"type": "DatasetReference"
+					},
+					"name": "AgencyMastercsv"
+				},
+				{
+					"dataset": {
+						"referenceName": "EmpMaster_csv",
+						"type": "DatasetReference"
+					},
+					"name": "EmpMastercsv"
+				},
+				{
+					"dataset": {
+						"referenceName": "TitleMaster_csv",
+						"type": "DatasetReference"
+					},
+					"name": "TitleMastercsv"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "NYC_Payroll_AGENCY_MD_synapse",
+						"type": "DatasetReference"
+					},
+					"name": "NYCPayrollAGENCYMDsynapse"
+				},
+				{
+					"dataset": {
+						"referenceName": "NYC_Payroll_EMP_MD_synapse",
+						"type": "DatasetReference"
+					},
+					"name": "NYCPayrollEMPMDsynapse"
+				},
+				{
+					"dataset": {
+						"referenceName": "NYC_Payroll_TITLE_MD_synapse",
+						"type": "DatasetReference"
+					},
+					"name": "NYCPayrollTITLEMDsynapse"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          AgencyID as string,",
+				"          AgencyName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> AgencyMastercsv",
+				"source(output(",
+				"          EmployeeID as string,",
+				"          LastName as string,",
+				"          FirstName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> EmpMastercsv",
+				"source(output(",
+				"          TitleCode as string,",
+				"          TitleDescription as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> TitleMastercsv",
+				"AgencyMastercsv sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          AgencyID,",
+				"          AgencyName",
+				"     )) ~> NYCPayrollAGENCYMDsynapse",
+				"EmpMastercsv sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          EmployeeID,",
+				"          LastName,",
+				"          FirstName",
+				"     )) ~> NYCPayrollEMPMDsynapse",
+				"TitleMastercsv sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          TitleCode,",
+				"          TitleDescription",
+				"     )) ~> NYCPayrollTITLEMDsynapse"
+			]
+		}
+	}
+}
